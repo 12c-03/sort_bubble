@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>選擇排序可视化</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        .input-section label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-section input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .input-section input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-sort {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-sort:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-reset {
+            background: #f093fb;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #da7dd8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+        }
+
+        .btn-example {
+            background: #4facfe;
+            color: white;
+        }
+
+        .btn-example:hover {
+            background: #3e96d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .visualization {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            min-height: 150px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .bar {
+            background: #667eea;
+            min-width: 30px;
+            border-radius: 3px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .bar.comparing {
+            background: #f093fb;
+        }
+
+        .bar.current-min {
+            background: #ff9800;
+        }
+
+        .bar.sorted {
+            background: #4caf50;
+        }
+
+        .info {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-text {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .output {
+            background: #263238;
+            color: #4fc3f7;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            min-height: 100px;
+        }
+
+        .output-title {
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .speed-control {
+            margin-bottom: 20px;
+        }
+
+        .speed-control label {
+            color: #555;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        .speed-control input[type="range"] {
+            width: 200px;
+            cursor: pointer;
+        }
+
+        .speed-value {
+            color: #667eea;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #f093fb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: #da7dd8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 選擇排序可视化</h1>
+        <a href="index.html" class="back-link">← 返回首页</a>
+
+        <div class="info">
+            <div class="info-text">
+                💡 <strong>選擇排序</strong>是一种简单的排序算法，通过重复地从未排序部分选择最小元素，并将其放到已排序部分的末尾，直到整个数组排序完成。
+            </div>
+        </div>
+
+        <div class="input-section">
+            <label for="arrayInput">输入数字（用逗号分隔）：</label>
+            <input type="text" id="arrayInput" placeholder="例如: 64,34,25,12,22,11,90" value="64,34,25,12,22,11,90">
+        </div>
+
+        <div class="speed-control">
+            <label for="speedControl">排序速度：</label>
+            <input type="range" id="speedControl" min="50" max="1000" value="300" step="50">
+            <span class="speed-value" id="speedValue">300ms</span>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-sort" onclick="startSort()">开始排序</button>
+            <button class="btn-reset" onclick="resetArray()">重置</button>
+            <button class="btn-example" onclick="loadExample()">加载示例</button>
+        </div>
+
+        <div class="visualization" id="visualization"></div>
+
+        <div class="output">
+            <div class="output-title">排序结果：</div>
+            <div id="output">等待排序...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentArray = [];
+        let isSorting = false;
+
+        // 初始化
+        window.addEventListener('load', () => {
+            loadExample();
+            document.getElementById('speedControl').addEventListener('input', (e) => {
+                document.getElementById('speedValue').textContent = e.target.value + 'ms';
+            });
+        });
+
+        function loadExample() {
+            document.getElementById('arrayInput').value = "64,34,25,12,22,11,90";
+            resetArray();
+        }
+
+        function resetArray() {
+            const input = document.getElementById('arrayInput').value;
+            currentArray = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
+            
+            if (currentArray.length === 0) {
+                alert('请输入有效的数字！');
+                return;
+            }
+            
+            renderBars();
+            document.getElementById('output').textContent = '数组已重置：' + currentArray.join(', ');
+            isSorting = false;
+        }
+
+        function renderBars(comparingIndices = [], currentMinIndex = -1, sortedIndices = []) {
+            const viz = document.getElementById('visualization');
+            viz.innerHTML = '';
+            
+            const maxValue = Math.max(...currentArray);
+            const barWidth = Math.max(30, 800 / currentArray.length);
+
+            currentArray.forEach((value, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = (value / maxValue * 300) + 'px';
+                bar.style.width = barWidth + 'px';
+                bar.textContent = value;
+
+                if (sortedIndices.includes(index)) {
+                    bar.classList.add('sorted');
+                } else if (index === currentMinIndex) {
+                    bar.classList.add('current-min');
+                } else if (comparingIndices.includes(index)) {
+                    bar.classList.add('comparing');
+                }
+
+                viz.appendChild(bar);
+            });
+        }
+
+        async function startSort() {
+            if (isSorting) return;
+            if (currentArray.length < 2) {
+                alert('请输入至少2个数字！');
+                return;
+            }
+
+            isSorting = true;
+            const speed = parseInt(document.getElementById('speedControl').value);
+            const arr = [...currentArray];
+            const n = arr.length;
+            const sortedIndices = [];
+
+            document.getElementById('output').textContent = '排序中...';
+
+            for (let i = 0; i < n - 1; i++) {
+                let minIndex = i;
+
+                // 标记当前最小元素
+                renderBars([], minIndex, sortedIndices);
+
+                for (let j = i + 1; j < n; j++) {
+                    // 显示正在比较的元素
+                    renderBars([j], minIndex, sortedIndices);
+                    await sleep(speed);
+
+                    if (arr[j] < arr[minIndex]) {
+                        minIndex = j;
+                        // 更新当前最小元素
+                        renderBars([], minIndex, sortedIndices);
+                    }
+                }
+
+                // 如果找到更小的元素，交换
+                if (minIndex !== i) {
+                    [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+                    [currentArray[i], currentArray[minIndex]] = [currentArray[minIndex], currentArray[i]];
+                }
+
+                sortedIndices.push(i);
+                renderBars([], -1, sortedIndices);
+                await sleep(speed);
+            }
+
+            sortedIndices.push(n - 1);
+            renderBars([], -1, sortedIndices);
+            document.getElementById('output').textContent = '✅ 排序完成！结果：' + currentArray.join(', ');
+            isSorting = false;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+</html>
