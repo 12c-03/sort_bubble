@@ -5,233 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>插入排序可视化</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 900px;
-            width: 100%;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        .input-section {
-            margin-bottom: 30px;
-        }
-
-        .input-section label {
-            display: block;
-            margin-bottom: 10px;
-            color: #555;
-            font-weight: 500;
-        }
-
-        .input-section input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            transition: border-color 0.3s;
-        }
-
-        .input-section input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-
-        .btn-sort {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-sort:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-reset {
-            background: #f093fb;
-            color: white;
-        }
-
-        .btn-reset:hover {
-            background: #da7dd8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
-        }
-
-        .btn-example {
-            background: #4facfe;
-            color: white;
-        }
-
-        .btn-example:hover {
-            background: #3e96d8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
-        }
-
-        .visualization {
-            background: #f5f5f5;
-            padding: 30px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            min-height: 150px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .bar {
-            background: #667eea;
-            min-width: 30px;
-            border-radius: 3px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .bar.comparing {
-            background: #f093fb;
-        }
-
-        .bar.current-insert {
-            background: #ff9800;
-        }
-
-        .bar.sorted {
-            background: #4caf50;
-        }
-
-        .info {
-            background: #f0f4ff;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border-left: 4px solid #667eea;
-        }
-
-        .info-text {
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .output {
-            background: #263238;
-            color: #4fc3f7;
-            padding: 20px;
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-            min-height: 100px;
-        }
-
-        .output-title {
-            color: #fff;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .speed-control {
-            margin-bottom: 20px;
-        }
-
-        .speed-control label {
-            color: #555;
-            font-weight: 500;
-            margin-right: 10px;
-        }
-
-        .speed-control input[type="range"] {
-            width: 200px;
-            cursor: pointer;
-        }
-
-        .speed-value {
-            color: #667eea;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #f093fb;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .back-link:hover {
-            background: #da7dd8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .container { background: white; border-radius: 10px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); padding: 40px; max-width: 900px; width: 100%; }
+        h1 { text-align: center; color: #333; margin-bottom: 20px; }
+        .input-section, .speed-control, .button-group, .info, .visualization, .output { margin-bottom: 20px; }
+        .info { background: #f0f4ff; padding: 15px; border-radius: 5px; border-left: 4px solid #667eea; }
+        .info-text { color: #333; line-height: 1.6; }
+        .tutorial { background: #fff9c4; padding: 15px; border-radius: 5px; border-left: 4px solid #ffca28; margin-bottom: 20px; }
+        .tutorial p { margin-bottom: 12px; color: #333; line-height: 1.6; }
+        .input-section label, .speed-control label { color: #555; font-weight: 500; display: block; margin-bottom: 8px; }
+        .input-section input, .speed-control input[type="range"] { width: 100%; }
+        .input-section input { padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px; margin-bottom: 12px; }
+        .input-section input:focus { border-color: #667eea; outline: none; }
+        .button-group { display: flex; flex-wrap: wrap; gap: 10px; }
+        button { padding: 12px 24px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
+        .btn-sort { background: #667eea; color: white; }
+        .btn-reset { background: #f093fb; color: white; }
+        .btn-example { background: #4facfe; color: white; }
+        .btn-sort:hover { background: #5568d3; transform: translateY(-1px); }
+        .btn-reset:hover { background: #da7dd8; transform: translateY(-1px); }
+        .btn-example:hover { background: #3e96d8; transform: translateY(-1px); }
+        .visualization { background: #f5f5f5; padding: 30px; border-radius: 5px; min-height: 150px; display: flex; align-items: flex-end; justify-content: center; gap: 5px; }
+        .bar { background: #667eea; min-width: 30px; border-radius: 3px; transition: all 0.2s cubic-bezier(0.4,0,0.2,1); display: flex; align-items: flex-end; justify-content: center; color: white; font-size: 12px; font-weight: bold; }
+        .bar.comparing { background: #f093fb; }
+        .bar.current-insert { background: #ff9800; }
+        .bar.sorted { background: #4caf50; }
+        .output { background: #263238; color: #4fc3f7; padding: 20px; border-radius: 5px; font-family: 'Courier New', monospace; overflow-x: auto; min-height: 100px; }
+        .output-title { color: #fff; margin-bottom: 10px; font-weight: bold; }
+        .speed-value { color: #667eea; font-weight: bold; margin-left: 10px; }
+        .back-link { display: inline-block; margin-top: 10px; padding: 10px 20px; background: #f093fb; color: white; text-decoration: none; border-radius: 5px; font-weight: 600; }
+        .back-link:hover { background: #da7dd8; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>✨ 插入排序可视化</h1>
-        <a href="index.html" class="back-link">← 返回首页</a>
+        <h1>📌 插入排序可视化</h1>
+        <a href="index.html" class="back-link">← 返回首頁</a>
 
         <div class="info">
-            <div class="info-text">
-                💡 <strong>插入排序</strong>是一种简单的排序算法，它通过将每个新元素插入到已排序部分的正确位置来构建最终排序。
-            </div>
+            <div class="info-text"><strong>插入排序（Insertion Sort）</strong> 是将数组分成已排序区间和未排序区间，然后逐个取未排序元素，向左扫描已排序区间并插入合适位置的算法。</div>
+        </div>
+
+        <div class="tutorial">
+            <p><strong>示范步骤：</strong></p>
+            <p>1) 假设第一个元素已排序；</p>
+            <p>2) 取下一个元素 `key`，从已排序区间右侧开始向左比较；</p>
+            <p>3) 如果左侧元素 > key，则向右移动；</p>
+            <p>4) 找到插入位置后放置 key，已排序区间长度 +1；</p>
+            <p>5) 重复直到所有元素排序完成。时间复杂度：O(n²)，空间复杂度：O(1)。</p>
         </div>
 
         <div class="input-section">
-            <label for="arrayInput">输入数字（用逗号分隔）：</label>
-            <input type="text" id="arrayInput" placeholder="例如: 64,34,25,12,22,11,90" value="64,34,25,12,22,11,90">
+            <label for="arrayInput">输入数字（逗号分隔）：</label>
+            <input type="text" id="arrayInput" placeholder="例如：64,34,25,12,22,11,90" value="64,34,25,12,22,11,90">
         </div>
 
         <div class="speed-control">
@@ -266,19 +93,17 @@
         });
 
         function loadExample() {
-            document.getElementById('arrayInput').value = "64,34,25,12,22,11,90";
+            document.getElementById('arrayInput').value = '64,34,25,12,22,11,90';
             resetArray();
         }
 
         function resetArray() {
             const input = document.getElementById('arrayInput').value;
             currentArray = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
-
             if (currentArray.length === 0) {
                 alert('请输入有效的数字！');
                 return;
             }
-
             renderBars();
             document.getElementById('output').textContent = '数组已重置：' + currentArray.join(', ');
             isSorting = false;
@@ -287,7 +112,6 @@
         function renderBars(comparingIndices = [], currentInsertIndex = -1, sortedIndices = []) {
             const viz = document.getElementById('visualization');
             viz.innerHTML = '';
-
             const maxValue = Math.max(...currentArray);
             const barWidth = Math.max(30, 800 / currentArray.length);
 
@@ -321,34 +145,32 @@
             const speed = parseInt(document.getElementById('speedControl').value);
             const arr = [...currentArray];
             const n = arr.length;
-            const sortedIndices = [];
+            let sortedCount = 1;
 
             document.getElementById('output').textContent = '排序中...';
-
-            sortedIndices.push(0);
-            renderBars([], -1, sortedIndices);
+            renderBars([], -1, [0]);
             await sleep(speed);
 
             for (let i = 1; i < n; i++) {
                 let key = arr[i];
                 let j = i - 1;
 
-                renderBars([], i, sortedIndices);
+                renderBars([i], i, [...Array(sortedCount).keys()]);
                 await sleep(speed);
 
                 while (j >= 0 && arr[j] > key) {
                     arr[j + 1] = arr[j];
                     currentArray[j + 1] = currentArray[j];
-                    renderBars([j], i, sortedIndices);
+                    renderBars([j, j + 1], i, [...Array(sortedCount).keys()]);
                     await sleep(speed);
                     j = j - 1;
                 }
 
                 arr[j + 1] = key;
                 currentArray[j + 1] = key;
+                sortedCount = i + 1;
 
-                sortedIndices.splice(i, 0, i);
-                renderBars([], -1, [...Array(i + 1).keys()]);
+                renderBars([], -1, [...Array(sortedCount).keys()]);
                 await sleep(speed);
             }
 
