@@ -43,11 +43,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>📌 插入排序可视化</h1>
-        <a href="index.html" class="back-link">← 返回首頁</a>
+        <h1>📌 Insertion Sort Visualizer</h1>
+        <a href="index.html" class="back-link">← Back to Home</a>
 
         <div class="info">
-            <div class="info-text"><strong>插入排序（Insertion Sort）</strong> 是将数组分成已排序区间和未排序区间，然后逐个取未排序元素，向左扫描已排序区间并插入合适位置的算法。</div>
+            <div class="info-text"><strong>Insertion Sort</strong> is an algorithm that maintains a sorted portion of the array and inserts each new element into the correct position of the sorted section.</div>
         </div>
 
         <div class="code-block" id="codeBlock">
@@ -78,36 +78,36 @@
         </div>
 
         <div class="tutorial">
-            <p><strong>示范步骤：</strong></p>
-            <p>1) 假设第一个元素已排序；</p>
-            <p>2) 取下一个元素 `key`，从已排序区间右侧开始向左比较；</p>
-            <p>3) 如果左侧元素 > key，则向右移动；</p>
-            <p>4) 找到插入位置后放置 key，已排序区间长度 +1；</p>
-            <p>5) 重复直到所有元素排序完成。时间复杂度：O(n²)，空间复杂度：O(1)。</p>
+            <p><strong>Step-by-step:</strong></p>
+            <p>1) Assume the first element is sorted;</p>
+            <p>2) Take the next element as <code>key</code>, compare it leftward in the sorted section;</p>
+            <p>3) If the left element > key, shift it right;</p>
+            <p>4) Insert key into the correct position and extend sorted section;</p>
+            <p>5) Repeat until the whole array is sorted. Complexity: O(n²) time, O(1) space.</p>
         </div>
 
         <div class="input-section">
-            <label for="arrayInput">输入数字（逗号分隔）：</label>
-            <input type="text" id="arrayInput" placeholder="例如：64,34,25,12,22,11,90" value="64,34,25,12,22,11,90">
+            <label for="arrayInput">Array input (comma-separated):</label>
+            <input type="text" id="arrayInput" placeholder="Example: 64,34,25,12,22,11,90" value="64,34,25,12,22,11,90">
         </div>
 
         <div class="speed-control">
-            <label for="speedControl">排序速度：</label>
+            <label for="speedControl">Sort speed:</label>
             <input type="range" id="speedControl" min="50" max="1000" value="300" step="50">
             <span class="speed-value" id="speedValue">300ms</span>
         </div>
 
         <div class="button-group">
-            <button class="btn-sort" onclick="startSort()">开始排序</button>
-            <button class="btn-reset" onclick="resetArray()">重置</button>
-            <button class="btn-example" onclick="loadExample()">加载示例</button>
+            <button class="btn-sort" onclick="startSort()">Start Sort</button>
+            <button class="btn-reset" onclick="resetArray()">Reset</button>
+            <button class="btn-example" onclick="loadExample()">Load Example</button>
         </div>
 
         <div class="visualization" id="visualization"></div>
 
         <div class="output">
-            <div class="output-title">排序结果：</div>
-            <div id="output">等待排序...</div>
+            <div class="output-title">Status:</div>
+            <div id="output">Waiting to sort...</div>
         </div>
     </div>
 
@@ -131,11 +131,11 @@
             const input = document.getElementById('arrayInput').value;
             currentArray = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
             if (currentArray.length === 0) {
-                alert('请输入有效的数字！');
+                alert('Please enter valid numbers!');
                 return;
             }
             renderBars();
-            document.getElementById('output').textContent = '数组已重置：' + currentArray.join(', ');
+            document.getElementById('output').textContent = 'Array reset: ' + currentArray.join(', ');
             isSorting = false;
         }
 
@@ -186,7 +186,7 @@
             }
             highlightCode(3);
             if (currentArray.length < 2) {
-                alert('请输入至少2个数字！');
+                alert('Please enter at least 2 numbers!');
                 return;
             }
 
