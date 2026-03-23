@@ -34,8 +34,11 @@
         .output { background: #263238; color: #4fc3f7; padding: 20px; border-radius: 5px; font-family: 'Courier New', monospace; overflow-x: auto; min-height: 100px; }
         .output-title { color: #fff; margin-bottom: 10px; font-weight: bold; }
         .speed-value { color: #667eea; font-weight: bold; margin-left: 10px; }
+        .code-block { background: #1d1f21; color: #c5c8c6; padding: 15px; border-radius: 5px; font-family: 'Courier New', monospace; overflow-x: auto; max-height: 280px; margin-bottom: 20px; }
+        .code-line { display: block; padding: 2px 6px; border-left: 4px solid transparent; white-space: pre; }
+        .code-line.active { background: rgba(79, 195, 247, 0.2); border-color: #4fc3f7; }
         .back-link { display: inline-block; margin-top: 10px; padding: 10px 20px; background: #f093fb; color: white; text-decoration: none; border-radius: 5px; font-weight: 600; }
-        .back-link:hover { background: #da7dd8; }
+        .back-link:hover { background: #da7dd8; } 
     </style>
 </head>
 <body>
@@ -45,6 +48,33 @@
 
         <div class="info">
             <div class="info-text"><strong>插入排序（Insertion Sort）</strong> 是将数组分成已排序区间和未排序区间，然后逐个取未排序元素，向左扫描已排序区间并插入合适位置的算法。</div>
+        </div>
+
+        <div class="code-block" id="codeBlock">
+            <code>
+                <span class="code-line" data-line="1">function startSort() {</span>
+                <span class="code-line" data-line="2">  if (isSorting) return;</span>
+                <span class="code-line" data-line="3">  if (currentArray.length < 2) { alert('请输入至少2个数字！'); return; }</span>
+                <span class="code-line" data-line="4">  isSorting = true;</span>
+                <span class="code-line" data-line="5">  const speed = parseInt(document.getElementById('speedControl').value);</span>
+                <span class="code-line" data-line="6">  const arr = [...currentArray];</span>
+                <span class="code-line" data-line="7">  const n = arr.length;</span>
+                <span class="code-line" data-line="8">  let sortedCount = 1;</span>
+                <span class="code-line" data-line="9">  ...</span>
+                <span class="code-line" data-line="10">  for (let i = 1; i < n; i++) {</span>
+                <span class="code-line" data-line="11">    let key = arr[i];</span>
+                <span class="code-line" data-line="12">    let j = i - 1;</span>
+                <span class="code-line" data-line="13">    while (j >= 0 && arr[j] > key) {</span>
+                <span class="code-line" data-line="14">      arr[j + 1] = arr[j];</span>
+                <span class="code-line" data-line="15">      j = j - 1;</span>
+                <span class="code-line" data-line="16">    }</span>
+                <span class="code-line" data-line="17">    arr[j + 1] = key;</span>
+                <span class="code-line" data-line="18">  }</span>
+                <span class="code-line" data-line="19">  renderBars([], -1, [...Array(n).keys()]);</span>
+                <span class="code-line" data-line="20">  document.getElementById('output').textContent = '✅ 排序完成！结果：' + currentArray.join(', ');</span>
+                <span class="code-line" data-line="21">  isSorting = false;</span>
+                <span class="code-line" data-line="22">}</span>
+            </code>
         </div>
 
         <div class="tutorial">
@@ -134,49 +164,80 @@
             });
         }
 
+        function highlightCode(line) {
+            const lines = document.querySelectorAll('.code-line');
+            lines.forEach(el => el.classList.remove('active'));
+            const target = document.querySelector(`.code-line[data-line="${line}"]`);
+            if (target) {
+                target.classList.add('active');
+            }
+        }
+
+        function updateStatus(message, line) {
+            document.getElementById('output').textContent = message;
+            highlightCode(line);
+        }
+
         async function startSort() {
-            if (isSorting) return;
+            highlightCode(1);
+            if (isSorting) {
+                highlightCode(2);
+                return;
+            }
+            highlightCode(3);
             if (currentArray.length < 2) {
                 alert('请输入至少2个数字！');
                 return;
             }
 
+            highlightCode(4);
             isSorting = true;
-            const speed = parseInt(document.getElementById('speedControl').value);
-            const arr = [...currentArray];
-            const n = arr.length;
-            let sortedCount = 1;
+            const speed = parseInt(document.getElementById('speedControl').value); highlightCode(5);
+            const arr = [...currentArray]; highlightCode(6);
+            const n = arr.length; highlightCode(7);
+            let sortedCount = 1; highlightCode(8);
 
-            document.getElementById('output').textContent = '排序中...';
-            renderBars([], -1, [0]);
-            await sleep(speed);
+            updateStatus('排序中...', 9);
+            renderBars([], -1, [0]); highlightCode(10);
+            await sleep(speed); highlightCode(11);
 
             for (let i = 1; i < n; i++) {
-                let key = arr[i];
-                let j = i - 1;
+                highlightCode(12);
+                let key = arr[i]; highlightCode(13);
+                let j = i - 1; highlightCode(14);
 
+                updateStatus('当前 key = ' + key + '，开始比较已排序区间', 15);
                 renderBars([i], i, [...Array(sortedCount).keys()]);
                 await sleep(speed);
 
                 while (j >= 0 && arr[j] > key) {
+                    highlightCode(16);
+                    updateStatus('arr[' + j + '] (' + arr[j] + ') > key (' + key + '), 右移元素', 16);
                     arr[j + 1] = arr[j];
                     currentArray[j + 1] = currentArray[j];
                     renderBars([j, j + 1], i, [...Array(sortedCount).keys()]);
                     await sleep(speed);
-                    j = j - 1;
+
+                    j = j - 1; highlightCode(17);
+                    if (j >= 0) {
+                        updateStatus('继续比较 arr[' + j + '] = ' + arr[j] + ' 与 key = ' + key, 13);
+                        await sleep(speed);
+                    }
                 }
 
+                highlightCode(18);
                 arr[j + 1] = key;
                 currentArray[j + 1] = key;
-                sortedCount = i + 1;
+                sortedCount = i + 1; highlightCode(19);
 
+                updateStatus('已插入 key 到位置 ' + (j + 1) + '，当前已排序长度 ' + sortedCount, 17);
                 renderBars([], -1, [...Array(sortedCount).keys()]);
-                await sleep(speed);
+                await sleep(speed); highlightCode(20);
             }
 
-            renderBars([], -1, [...Array(n).keys()]);
-            document.getElementById('output').textContent = '✅ 排序完成！结果：' + currentArray.join(', ');
-            isSorting = false;
+            renderBars([], -1, [...Array(n).keys()]); highlightCode(21);
+            updateStatus('✅ 排序完成！结果：' + currentArray.join(', '), 22);
+            isSorting = false; highlightCode(22);
         }
 
         function sleep(ms) {
